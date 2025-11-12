@@ -3,6 +3,10 @@ FROM node:18-alpine as build
 
 WORKDIR /app
 
+# Pass build arguments
+ARG VITE_API_BASE
+ENV VITE_API_BASE=${VITE_API_BASE}
+
 COPY package.json .
 RUN npm install
 

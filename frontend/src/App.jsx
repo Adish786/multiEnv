@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
+import {config} from './config'
 
 const App = () => {
   const [devTickets, setDevTickets] = useState([]);
@@ -9,7 +10,8 @@ const App = () => {
   const [selectedEnv, setSelectedEnv] = useState('dev');
   const [loading, setLoading] = useState({ dev: false, prod: false });
 
-  const API_BASE = 'http://localhost:3000/api';
+  // Use relative paths - nginx will proxy them correctly
+  const API_BASE = config.API_BASE;
 
   const fetchTickets = async (environment) => {
     setLoading(prev => ({ ...prev, [environment]: true }));
@@ -22,22 +24,28 @@ const App = () => {
       }
     } catch (error) {
       console.error(`Error fetching ${environment} tickets:`, error);
+      alert(`Error fetching ${environment} tickets. Check console for details.`);
     } finally {
       setLoading(prev => ({ ...prev, [environment]: false }));
     }
   };
 
   const createTicket = async (environment) => {
-    if (!newTicketTitle.trim()) return;
+    if (!newTicketTitle.trim()) {
+      alert('Please enter a ticket title');
+      return;
+    }
 
     try {
       await axios.post(`${API_BASE}/${environment}/tickets`, {
         title: newTicketTitle
       });
       setNewTicketTitle('');
-      fetchTickets(environment);
+      await fetchTickets(environment);
+      alert(`Ticket created successfully in ${environment} environment`);
     } catch (error) {
       console.error(`Error creating ${environment} ticket:`, error);
+      alert(`Error creating ticket in ${environment}. Check console for details.`);
     }
   };
 
@@ -46,9 +54,10 @@ const App = () => {
       await axios.put(`${API_BASE}/${environment}/tickets/${ticketId}`, {
         status: newStatus
       });
-      fetchTickets(environment);
+      await fetchTickets(environment);
     } catch (error) {
       console.error(`Error updating ${environment} ticket:`, error);
+      alert(`Error updating ticket status in ${environment}. Check console for details.`);
     }
   };
 
@@ -85,6 +94,11 @@ const App = () => {
       <header className="app-header">
         <h1>Multi-Environment Ticket Management</h1>
         <p>Manage tickets across Development and Production environments</p>
+        <div className="access-urls">
+          <p><strong>Access URLs:</strong></p>
+          <p>Development: <code>/api/dev/tickets</code></p>
+          <p>Production: <code>/api/prod/tickets</code></p>
+        </div>
       </header>
 
       <div className="ticket-creation">

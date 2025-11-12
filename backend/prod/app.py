@@ -16,6 +16,18 @@ tickets = [
     {"id": 3, "title": "Security Patch", "status": "in-progress", "environment": "prod", "created_at": "2024-01-14"}
 ]
 
+# ADD THIS ROOT ROUTE
+@app.route('/', methods=['GET'])
+def root():
+    return jsonify({
+        "message": f"Ticket Management API - {ENV}",
+        "environment": ENV,
+        "endpoints": {
+            "health": "/health",
+            "tickets": "/tickets"
+        }
+    })
+
 @app.route('/health', methods=['GET'])
 def health_check():
     return jsonify({
@@ -55,5 +67,4 @@ def update_ticket(ticket_id):
     return jsonify({"error": "Ticket not found"}), 404
 
 if __name__ == '__main__':
-    #app.run(host='0.0.0.0', port=PORT, debug=False)
-    app.run(host="0.0.0.0", port=3002, debug=True)
+    app.run(host='0.0.0.0', port=PORT, debug=False)

@@ -8,12 +8,25 @@ CORS(app)
 
 # Environment configuration
 ENV = os.getenv('ENVIRONMENT', 'development')
-PORT = os.getenv('PORT', 3001)
+PORT = os.getenv('PORT', 3002)
 
 tickets = [
-    {"id": 1, "title": "Fix Login Issue", "status": "open", "environment": "dev", "created_at": "2024-01-15"},
-    {"id": 2, "title": "Update API Documentation", "status": "in-progress", "environment": "dev", "created_at": "2024-01-16"}
+    {"id": 1, "title": "Development Deployment", "status": "closed", "environment": "prod", "created_at": "2024-01-10"},
+    {"id": 2, "title": "Database Optimization", "status": "open", "environment": "prod", "created_at": "2024-01-12"},
+    {"id": 3, "title": "Security Patch", "status": "in-progress", "environment": "prod", "created_at": "2024-01-14"}
 ]
+
+# ADD THIS ROOT ROUTE
+@app.route('/', methods=['GET'])
+def root():
+    return jsonify({
+        "message": f"Ticket Management API - {ENV}",
+        "environment": ENV,
+        "endpoints": {
+            "health": "/health",
+            "tickets": "/tickets"
+        }
+    })
 
 @app.route('/health', methods=['GET'])
 def health_check():
@@ -38,7 +51,7 @@ def create_ticket():
         "id": len(tickets) + 1,
         "title": data.get('title', 'Untitled Ticket'),
         "status": "open",
-        "environment": "dev",
+        "environment": "prod",
         "created_at": datetime.now().strftime("%Y-%m-%d")
     }
     tickets.append(new_ticket)
@@ -54,5 +67,4 @@ def update_ticket(ticket_id):
     return jsonify({"error": "Ticket not found"}), 404
 
 if __name__ == '__main__':
-    #app.run(host='0.0.0.0', port=PORT, debug=True)
-    app.run(host="0.0.0.0", port=3001, debug=True)
+    app.run(host='0.0.0.0', port=PORT, debug=False)
