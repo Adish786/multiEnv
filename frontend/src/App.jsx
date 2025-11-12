@@ -10,7 +10,6 @@ const App = () => {
   const [selectedEnv, setSelectedEnv] = useState('dev');
   const [loading, setLoading] = useState({ dev: false, prod: false });
 
-  // Use relative paths - nginx will proxy them correctly
   const API_BASE = config.API_BASE;
 
   const fetchTickets = async (environment) => {

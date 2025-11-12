@@ -145,6 +145,20 @@ Development API via Proxy: http://localhost:3000/api/dev
 
 Production API via Proxy: http://localhost:3000/api/prod
 
+# Quick Fix 
+# Stop everything
+docker-compose down
+
+# Update your backend files with the root route addition
+# Update your nginx.conf with the simplified version
+# Update your frontend App.jsx with the relative paths
+
+# Rebuild and restart
+docker-compose up -d --build
+
+# Check logs
+docker-compose logs -f
+
 Features
  Multi-environment ticket management
 
