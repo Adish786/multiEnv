@@ -17,7 +17,7 @@ A Docker-based multi-environment application with separate development and produ
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/Adish786/multiEnv.git
    cd multiEnv
 
 Deploy the application
