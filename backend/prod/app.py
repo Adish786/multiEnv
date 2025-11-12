@@ -55,4 +55,5 @@ def update_ticket(ticket_id):
     return jsonify({"error": "Ticket not found"}), 404
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=PORT, debug=False)
+    #app.run(host='0.0.0.0', port=PORT, debug=False)
+    app.run(host="0.0.0.0", port=3002, debug=True)
