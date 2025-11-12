@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  # Development Backend Service
+  backend-dev:
+    build: ./backend/dev
+    container_name: ticket-dev-backend
+    ports:
+      - "3001:3001"
+    environment:
+      - ENVIRONMENT=development
+      - PORT=3001
+      - DEBUG=True
+    volumes:
+      - ./backend/dev:/app
+    networks:
+      - ticket-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Production Backend Service
+  backend-prod:
+    build: ./backend/prod
+    container_name: ticket-prod-backend
+    ports:
+      - "3002:3002"
+    environment:
+      - ENVIRONMENT=production
+      - PORT=3002
+      - DEBUG=False
+    networks:
+      - ticket-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3002/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Frontend Service
+  frontend:
+    build: ./frontend
+    container_name: ticket-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      backend-dev:
+        condition: service_healthy
+      backend-prod:
+        condition: service_healthy
+    networks:
+      - ticket-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  ticket-network:
+    driver: bridge
+
+volumes:
+  dev-data:
+  prod-data:
