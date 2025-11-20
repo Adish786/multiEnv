@@ -1,0 +1,15 @@
+Student Name: Adish Ansari
+
+Repository URL: https://github.com/Adish786/multiEnv.git
+
+Deployment Status: Working
+
+Access URLs:
+
+- Development: http://18.132.206.145:3000/dev
+
+- Production: http://18.132.206.145:3000/prod
+
+- Frontend: http://18.132.206.145:3000
+
+Date of Submission: 20-11-2025

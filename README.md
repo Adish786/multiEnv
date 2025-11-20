@@ -13,7 +13,8 @@ A Docker-based multi-environment application with separate development and produ
 - Docker Engine 20.10+
 - Docker Compose 2.0+
 
-## Quick Start
+## Quick Start & Setup follow this pdf file 
+       https://github.com/Adish786/multiEnv/blob/main/MultiEnv.pdf
 
 1. **Clone the repository**
    ```bash
